@@ -1,0 +1,5 @@
+venv
+.venv
+vectorstore_data
+__pycache__/
+.DS_store
