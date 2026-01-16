@@ -42,6 +42,14 @@ def webhook():
         text=message,
     )
 
+    evo_client.send_buttons(
+        number=wnumber,
+    )
+    
+    evo_client.send_list(
+        number=wnumber,
+    )
+
     return jsonify({'status': 'success'}), 200
 
 

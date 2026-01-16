@@ -26,10 +26,110 @@ class EvolutionAPI:
     def send_message(self, number, text):
         payload = {
             'number': number,
+            "options": {
+                "delay": 3000,
+                "presence": "composing"
+            },
             'text': text,
         }
         response = requests.post(
             url=f'{self.BASE_URL}/message/sendText/{self.INSTANCE_NAME}',
+            headers=self.__headers,
+            json=payload,
+        )
+        return response.json()
+    
+    
+    def send_buttons(self, number):
+        payload = {
+            'number': number,
+            "options": {
+                "delay": 2000,
+                "presence": "composing"
+            },
+            "buttonMessage": {
+            "title": "Olá! Como podemos te ajudar hoje?",
+            "description": "Escolha uma das opções abaixo para agilizar seu atendimento:",
+            "footer": "Bot de Atendimento",
+            "buttons": [
+            {
+                "type": "reply",
+                "id": "btn_precos",
+                "displayText": "Consultar preços"
+            },
+            {
+                "type": "reply",
+                "id": "btn_fotos",
+                "displayText": "Receber fotos"
+            },
+            {
+                "type": "reply",
+                "id": "btn_agendar",
+                "displayText": "Agendar visita"
+            }
+            ]
+            }
+        }
+
+        response = requests.post(
+            url=f'{self.BASE_URL}/message/sendButtons/{self.INSTANCE_NAME}',
+            headers=self.__headers,
+            json=payload,
+        )
+        return response.json()
+    
+    
+    def send_list(self, number):
+        payload = {
+            'number': number,
+            "options": {
+                "delay": 2000,
+                "presence": "composing"
+            },
+            "title": "Menu de Atendimento",
+            "description": "Selecione o que você deseja fazer hoje:",
+            "buttonText": "Abrir Opções",
+            "footer": "Credat Auto",
+            "sections": [
+                {
+                "title": "Serviços Principais",
+                "rows": [
+                    {
+                    "title": "Consultar preços",
+                    "description": "Veja nossa tabela atualizada",
+                    "rowId": "id_precos"
+                    },
+                    {
+                    "title": "Receber fotos",
+                    "description": "Imagens do veículo/produto",
+                    "rowId": "id_fotos"
+                    },
+                    {
+                    "title": "Agendar visita",
+                    "description": "Marque um horário presencial",
+                    "rowId": "id_agendar"
+                    }
+                ]
+                },
+                {
+                "title": "Outras Opções",
+                "rows": [
+                    {
+                    "title": "Falar com atendente",
+                    "description": "Atendimento humano",
+                    "rowId": "id_humano"
+                    },
+                    {
+                    "title": "Encerrar",
+                    "rowId": "id_sair"
+                    }
+                ]
+                }
+            ]
+        }
+
+        response = requests.post(
+            url=f'{self.BASE_URL}/message/sendList/{self.INSTANCE_NAME}',
             headers=self.__headers,
             json=payload,
         )
