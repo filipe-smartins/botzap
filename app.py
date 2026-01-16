@@ -1,3 +1,4 @@
+from evolution_api import EvolutionAPI
 from flask import Flask, request, jsonify
 
 
@@ -9,6 +10,16 @@ def webhook():
     data = request.json
 
     print(f'EVENTO RECEBIDO: {data}')
+    
+    evo_client = EvolutionAPI()
+    
+    wnumber = '553185868191@s.whatsapp.net'
+    message = f'teste api'
+    
+    evo_client.send_message(
+        number=wnumber,
+        text=message,
+    )
 
     return jsonify({'status': 'success'}), 200
 
