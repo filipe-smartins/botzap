@@ -76,48 +76,40 @@ class EvolutionAPI:
     
     
     def send_list(self, number):
-        payload = {
-            'number': number,
-            "title": "Menu de Atendimento",
-            "description": "Selecione o que você deseja fazer hoje:",
-            "buttonText": "Abrir Opções",
-            "footerText": "Credat Auto",
-            "sections": [
-                {
+        # DEFINIÇÃO DAS SEÇÕES (Isso não muda)
+        sections = [
+            {
                 "title": "Serviços Principais",
                 "rows": [
-                    {
-                    "title": "Consultar preços",
-                    "description": "Veja nossa tabela atualizada",
-                    "rowId": "id_precos"
-                    },
-                    {
-                    "title": "Receber fotos",
-                    "description": "Imagens do veículo/produto",
-                    "rowId": "id_fotos"
-                    },
-                    {
-                    "title": "Agendar visita",
-                    "description": "Marque um horário presencial",
-                    "rowId": "id_agendar"
-                    }
+                    {"title": "Consultar preços", "description": "Veja tabela", "rowId": "id_precos"},
+                    {"title": "Receber fotos", "description": "Imagens", "rowId": "id_fotos"},
+                    {"title": "Agendar visita", "description": "Presencial", "rowId": "id_agendar"}
                 ]
-                },
-                {
+            },
+            {
                 "title": "Outras Opções",
                 "rows": [
-                    {
-                    "title": "Falar com atendente",
-                    "description": "Atendimento humano",
-                    "rowId": "id_humano"
-                    },
-                    {
-                    "title": "Encerrar",
-                    "rowId": "id_sair"
-                    }
+                    {"title": "Falar com atendente", "description": "Humano", "rowId": "id_humano"},
+                    {"title": "Encerrar", "rowId": "id_sair"}
                 ]
-                }
-            ]
+            }
+        ]
+
+        # PAYLOAD CORRIGIDO (COM ENVELOPE listMessage)
+        payload = {
+            'number': number,
+            # NÃO coloque "options" aqui
+            # NÃO coloque "title", "sections" soltos na raiz aqui.
+            
+            # AQUI ESTÁ A CORREÇÃO MÁGICA:
+            "listMessage": {
+                "title": "Menu de Atendimento",
+                "description": "Selecione o que você deseja fazer hoje:",
+                "buttonText": "Abrir Opções",
+                "footerText": "Credat Auto",
+                "sections": sections,
+                "listType": 1 # 1 = SINGLE_SELECT (Padrão)
+            }
         }
 
         response = requests.post(

@@ -1,5 +1,6 @@
 from evolution_api import EvolutionAPI
 from flask import Flask, request, jsonify
+from time import sleep
 
 
 app = Flask(__name__)
@@ -42,9 +43,13 @@ def webhook():
         text=message,
     )
 
+    sleep(3)
+
     evo_client.send_buttons(
         number=wnumber,
     )
+    
+    sleep(3)
     
     evo_client.send_list(
         number=wnumber,
