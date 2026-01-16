@@ -50,7 +50,7 @@ class EvolutionAPI:
             "buttonMessage": {
             "title": "Olá! Como podemos te ajudar hoje?",
             "description": "Escolha uma das opções abaixo para agilizar seu atendimento:",
-            "footer": "Bot de Atendimento",
+            "footerText": "Bot de Atendimento",
             "buttons": [
             {
                 "type": "reply",
@@ -89,7 +89,7 @@ class EvolutionAPI:
             "title": "Menu de Atendimento",
             "description": "Selecione o que você deseja fazer hoje:",
             "buttonText": "Abrir Opções",
-            "footer": "Credat Auto",
+            "footerText": "Credat Auto",
             "sections": [
                 {
                 "title": "Serviços Principais",
