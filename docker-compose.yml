@@ -10,6 +10,8 @@ services:
       - .env
     volumes:
       - evolution_instances:/evolution/instances
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
       - redis
@@ -57,5 +59,3 @@ volumes:
   evolution_instances:
   postgres_data:
   redis:
-  vectorstore_data:
-  rag_files:
