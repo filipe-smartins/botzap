@@ -43,10 +43,6 @@ class EvolutionAPI:
     def send_buttons(self, number):
         payload = {
             'number': number,
-            "options": {
-                "delay": 2000,
-                "presence": "composing"
-            },
             "buttonMessage": {
             "title": "Olá! Como podemos te ajudar hoje?",
             "description": "Escolha uma das opções abaixo para agilizar seu atendimento:",
@@ -82,10 +78,6 @@ class EvolutionAPI:
     def send_list(self, number):
         payload = {
             'number': number,
-            "options": {
-                "delay": 2000,
-                "presence": "composing"
-            },
             "title": "Menu de Atendimento",
             "description": "Selecione o que você deseja fazer hoje:",
             "buttonText": "Abrir Opções",
