@@ -23,14 +23,12 @@ class EvolutionAPI:
             'Content-Type': 'application/json'
         }
 
-    def send_message(self, number, text):
+    def send_message(self, number, text, delay=5000):   
         payload = {
-            'number': number,
-            "options": {
-                "delay": 5000,
-                "presence": "composing"
-            },
-            'text': text,
+            "number": number,
+            "text": text,
+            "delay": delay # O delay fica na raiz do JSON (em milissegundos)
+            #"linkPreview": True # Opcional: Adiciona prévia se houver link
         }
         response = requests.post(
             url=f'{self.BASE_URL}/message/sendText/{self.INSTANCE_NAME}',
