@@ -39,7 +39,7 @@ class EvolutionAPI:
     
     def get_contact(self, number):
         response = requests.get(
-            url=f'{self.BASE_URL}/contact/get/{self.INSTANCE_NAME}/{number}',
+            url=f'{self.BASE_URL}/contact/find/{self.INSTANCE_NAME}/{number}',
             headers=self.__headers,
         )
         return response.json()
