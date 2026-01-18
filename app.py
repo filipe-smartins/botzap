@@ -158,7 +158,7 @@ def webhook():
                 text=decisao_negativa,
             )   
             
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('decisão negativa', data_atual, wnumber))
+            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('concluído', data_atual, wnumber))
         else:
             
             evo_client.send_message(
@@ -192,7 +192,7 @@ def webhook():
                 text=final_agradecimento,
             )
 
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('decisão negativa final', data_atual, wnumber))
+            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('concluído', data_atual, wnumber))
         else:
             evo_client.send_message(
                 number=wnumber,
