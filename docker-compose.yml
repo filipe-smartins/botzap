@@ -13,14 +13,28 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-    #  - postgres
+      - postgres
       - redis
     environment:
       - NODE_OPTIONS=--max-old-space-size=350
     logging:
       driver: "none"
 
-
+  postgres:
+    container_name: postgres
+    image: postgres:15-alpine
+    command: postgres -c max_connections=50 -c shared_buffers=64MB -c log_min_messages=PANIC -c log_min_error_statement=PANIC -c logging_collector=off
+    restart: always
+    #ports:
+    #  - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    logging:
+      driver: "none"
+    #expose:
+    #  - 5432
 
   redis:
     image: redis:alpine
