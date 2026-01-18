@@ -26,7 +26,7 @@ def webhook():
 
     # Dica: Às vezes o Evolution manda eventos de status ou presença. 
     # É bom checar se é uma mensagem nova.
-    if body.get('event') != 'messages.upsert' or msg_data.get('key', {}).get('remoteJid', '') != '553185471996@s.whatsapp.net':
+    if body.get('event') != 'messages.upsert' or msg_data.get('key', {}).get('remoteJid', '') != '553197166257@s.whatsapp.net':
         return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
 
 
@@ -41,7 +41,7 @@ def webhook():
     wnumber = msg_data.get('key', {}).get('remoteJid', '')
 
     
-    wnumber = '553185471996@s.whatsapp.net'
+    wnumber = '553197166257@s.whatsapp.net'
     
     #print(f'wnumber: {wnumber}')
     
@@ -58,11 +58,6 @@ def webhook():
         evo_client.send_message(
             number=wnumber,
             text=boas_vindas,
-        )
-        sleep(1)
-        evo_client.send_message(
-            number=wnumber,
-            text=sobre_o_valor,
         )
         
         cursor.execute("INSERT INTO contatos (numero, nome, status, data_ultimo_contato) VALUES (?, ?, ?, ?)", (wnumber, nome, 'primeiro contato', data_atual))
@@ -234,7 +229,15 @@ def webhook():
             number=wnumber,
             text=falar_com_atendente,
         )
+       
+    
+    elif "day use" in texto.lower().strip() or "dayuse" in texto.lower().strip() or "convite" in texto.lower().strip() or "diária" in texto.lower().strip() or "diaria" in texto.lower().strip():
         
+        evo_client.send_message(
+            number=wnumber,
+            text=cotas_6_meses,
+        )
+     
     else:
         
         evo_client.send_message(
