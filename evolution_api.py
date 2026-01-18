@@ -37,6 +37,12 @@ class EvolutionAPI:
         )
         return response.json()
     
+    def get_contact(self, number):
+        response = requests.get(
+            url=f'{self.BASE_URL}/contact/get/{self.INSTANCE_NAME}/{number}',
+            headers=self.__headers,
+        )
+        return response.json()
     
     def send_buttons(self, number):
         payload = {
