@@ -24,7 +24,7 @@ def webhook():
 
     # Dica: Às vezes o Evolution manda eventos de status ou presença. 
     # É bom checar se é uma mensagem nova.
-    if body.get('event') != 'messages.upsert' and msg_data.get('key', {}).get('remoteJid', '') != '553185868191@s.whatsapp.net':
+    if body.get('event') != 'messages.upsert' and msg_data.get('key', {}).get('remoteJid', '') != '553185471996@s.whatsapp.net':
         return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
 
     # 2. Acessa o objeto interno 'data'
@@ -55,7 +55,7 @@ def webhook():
             number=wnumber,
             text=boas_vindas,
         )
-                
+        sleep(1)
         evo_client.send_message(
             number=wnumber,
             text=sobre_o_valor,
