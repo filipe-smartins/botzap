@@ -18,10 +18,18 @@ def webhook():
     data_atual = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
     body = request.json
-
-
     # 2. Acessa o objeto interno 'data'
     msg_data = body.get('data', {})
+
+
+    #print(f'BODY RECEBIDO: {body}')
+
+    # Dica: Às vezes o Evolution manda eventos de status ou presença. 
+    # É bom checar se é uma mensagem nova.
+    if body.get('event') != 'messages.upsert' or msg_data.get('key', {}).get('remoteJid', '') != '553185471996@s.whatsapp.net':
+        return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
+
+
     # 4. EXTRAIR A MENSAGEM
     # O WhatsApp muda o campo dependendo se é texto simples ou resposta/link
     message_content = msg_data.get('message', {})
@@ -31,14 +39,6 @@ def webhook():
     #print(f'MSG DATA RECEBIDO: {texto}')
 
     wnumber = msg_data.get('key', {}).get('remoteJid', '')
-
-
-    #print(f'BODY RECEBIDO: {body}')
-
-    # Dica: Às vezes o Evolution manda eventos de status ou presença. 
-    # É bom checar se é uma mensagem nova.
-    if body.get('event') != 'messages.upsert' or msg_data.get('key', {}).get('remoteJid', '') != '553185471996@s.whatsapp.net':
-        return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
 
     
     wnumber = '553185471996@s.whatsapp.net'
