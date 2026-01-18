@@ -13,13 +13,14 @@ pausar = False
 @app.route('/chatbot/webhook/', methods=['POST'])
 def webhook():
     
+    body = request.json
 
     if body.get('event') != 'messages.upsert':
         return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
     
     data_atual = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
-    body = request.json
+
     msg_data = body.get('data', {})
     message_content = msg_data.get('message', {})
     texto = message_content.get('conversation')
