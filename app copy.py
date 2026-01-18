@@ -49,7 +49,6 @@ def webhook():
     if not contato:
         
         print(boas_vindas)
-        print(sobre_o_valor)
         
         cursor.execute("INSERT INTO contatos (numero, nome, status, data_ultimo_contato) VALUES (?, ?, ?, ?)", (wnumber, nome, 'primeiro contato', data_atual))
         conn.commit()
