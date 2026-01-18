@@ -20,7 +20,6 @@ def webhook():
     
     data_atual = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
-    print('BODY RECEBIDO:', body)
 
     msg_data = body.get('data', {})
     message_content = msg_data.get('message', {})
@@ -45,15 +44,6 @@ def webhook():
     
 
     evo_client = EvolutionAPI()
-    
-    number = wnumber.split('@')[0]
-    contact = evo_client.get_contact(wnumber)
-    
-    print('CONTATO:', contact)
-    
-    if True:
-        return jsonify({'status': 'success'}), 200
-    
     
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()

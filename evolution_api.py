@@ -36,7 +36,7 @@ class EvolutionAPI:
             json=payload,
         )
         return response.json()
-    
+    """
     def get_contact(self, number):  
         # 1. Ajuste a URL (remova o número do final)
         url = f'{self.BASE_URL}/contact/find/{self.INSTANCE_NAME}'
@@ -56,6 +56,7 @@ class EvolutionAPI:
         )
         
         return response.json()
+    """
     
     def send_buttons(self, number):
         payload = {
