@@ -29,9 +29,9 @@ def webhook():
     
     #CONFIGURAÇÃO DE PAUSA
     global pausar
-    if texto.lower().strip() == 'pausar bot':
+    if texto and texto.lower().strip() == 'pausar bot':
         pausar = True
-    if texto.lower().strip() == 'reiniciar bot':
+    if texto and texto.lower().strip() == 'reiniciar bot':
         pausar = False
     if pausar:
         return jsonify({'status': 'paused'}), 200
