@@ -38,8 +38,8 @@ def webhook():
 
 
     # APENAS PARA DEBUG
-    wnumber = '553197166257@s.whatsapp.net'   
-    if msg_data.get('key', {}).get('remoteJid', '') != '553197166257@s.whatsapp.net':
+    wnumber = '553185868191@s.whatsapp.net'   
+    if msg_data.get('key', {}).get('remoteJid', '') != '553185868191@s.whatsapp.net':
         return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
     
 

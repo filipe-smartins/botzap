@@ -1,7 +1,7 @@
 
 
 
-boas_vindas = """Túnel Clube
+boas_vindas = """Cotas do Túnel Clube - Atendente Virtual
 Av. Ibirité, 331 - Marilândia, Ibirité - MG
 
 Olá, nesta promoção será cobrada somente a taxa de manutenção anual.

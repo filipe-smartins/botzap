@@ -149,6 +149,6 @@ Em breve ele irá te responder!
 Seguem algumas informações que podem te ajudar:
 
 Endereço do clube: Av. Ibirité, 331 - Marilândia, Ibirité - MG
-Telefone para contato: 31 97106-8182
+Telefone para contato: 31 971068182
 Horário de funcionamento: Quinta a Domingo, das 9:00h às 17:00h (retirada da cota somente aos Sábados e Domingos)
 """
