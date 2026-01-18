@@ -8,48 +8,44 @@ from respostas import *
 
 app = Flask(__name__)
 
+pausar = False
 
 @app.route('/chatbot/webhook/', methods=['POST'])
 def webhook():
     
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
+
+    if body.get('event') != 'messages.upsert':
+        return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
     
     data_atual = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
     body = request.json
-    # 2. Acessa o objeto interno 'data'
     msg_data = body.get('data', {})
-
-
-    #print(f'BODY RECEBIDO: {body}')
-
-    # Dica: Às vezes o Evolution manda eventos de status ou presença. 
-    # É bom checar se é uma mensagem nova.
-    if body.get('event') != 'messages.upsert' or msg_data.get('key', {}).get('remoteJid', '') != '553197166257@s.whatsapp.net':
-        return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
-
-
-    # 4. EXTRAIR A MENSAGEM
-    # O WhatsApp muda o campo dependendo se é texto simples ou resposta/link
     message_content = msg_data.get('message', {})
-    # Tenta pegar texto simples
     texto = message_content.get('conversation')
-
-    #print(f'MSG DATA RECEBIDO: {texto}')
-
-    wnumber = msg_data.get('key', {}).get('remoteJid', '')
-
-    
-    wnumber = '553197166257@s.whatsapp.net'
-    
-    #print(f'wnumber: {wnumber}')
-    
+    wnumber = msg_data.get('key', {}).get('remoteJid', '') 
     nome = msg_data.get('pushName', '')
     
-    #print(f'nome: {nome}')
+    #CONFIGURAÇÃO DE PAUSA
+    global pausar
+    if texto.lower().strip() == 'pausar bot':
+        pausar = True
+    if texto.lower().strip() == 'reiniciar bot':
+        pausar = False
+    if pausar:
+        return jsonify({'status': 'paused'}), 200
+
+
+    # APENAS PARA DEBUG
+    wnumber = '553197166257@s.whatsapp.net'   
+    if msg_data.get('key', {}).get('remoteJid', '') != '553197166257@s.whatsapp.net':
+        return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
     
+
     evo_client = EvolutionAPI()
+    
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
     
     cursor.execute("SELECT * FROM contatos WHERE numero=?", (wnumber,))
     contato = cursor.fetchone()
@@ -62,6 +58,16 @@ def webhook():
         
         cursor.execute("INSERT INTO contatos (numero, nome, status, data_ultimo_contato) VALUES (?, ?, ?, ?)", (wnumber, nome, 'primeiro contato', data_atual))
         conn.commit()
+    
+    elif "day use" in texto.lower().strip() or "dayuse" in texto.lower().strip() or "convite" in texto.lower().strip() or "diária" in texto.lower().strip() or "diaria" in texto.lower().strip():
+        
+        evo_client.send_message(
+            number=wnumber,
+            text=cotas_6_meses,
+        )
+    
+    elif contato[2] == 'concluído':
+        pass
     
     elif contato[2] == 'primeiro contato':
         
@@ -229,14 +235,8 @@ def webhook():
             number=wnumber,
             text=falar_com_atendente,
         )
-       
-    
-    elif "day use" in texto.lower().strip() or "dayuse" in texto.lower().strip() or "convite" in texto.lower().strip() or "diária" in texto.lower().strip() or "diaria" in texto.lower().strip():
         
-        evo_client.send_message(
-            number=wnumber,
-            text=cotas_6_meses,
-        )
+        cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('concluído', data_atual, wnumber))
      
     else:
         
@@ -244,6 +244,8 @@ def webhook():
             number=wnumber,
             text=falar_com_atendente,
         )
+        
+        cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('concluído', data_atual, wnumber))
 
     
     conn.commit()

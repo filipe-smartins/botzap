@@ -89,7 +89,7 @@ Responda apenas SIM ou NÃO.
 
 decisao_positiva = """Ok. Compareça ao clube, de quinta-feira a domingo, das 9:00h às 15:00h, para retirar sua cota!
 
-Na portaria, é só pedir para falar com o Gomes.
+É só pedir para falar com o Gomes.
 
 Compareça e garanta seu lazer para um ano inteiro!
 
