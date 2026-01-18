@@ -47,7 +47,7 @@ def webhook():
     evo_client = EvolutionAPI()
     
     number = wnumber.split('@')[0]
-    contact = evo_client.get_contact(number)
+    contact = evo_client.get_contact(wnumber)
     
     print('CONTATO:', contact)
     

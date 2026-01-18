@@ -37,11 +37,24 @@ class EvolutionAPI:
         )
         return response.json()
     
-    def get_contact(self, number):
-        response = requests.get(
-            url=f'{self.BASE_URL}/contact/find/{self.INSTANCE_NAME}/{number}',
+    def get_contact(self, number):  
+        # 1. Ajuste a URL (remova o número do final)
+        url = f'{self.BASE_URL}/contact/find/{self.INSTANCE_NAME}'
+        
+        # 2. Monte o payload (o número vai aqui dentro)
+        payload = {
+            "where": {
+                "id": number  # Ex: 553199998888@s.whatsapp.net
+            }
+        }
+
+        # 3. Mude para POST e envie o json
+        response = requests.post(
+            url=url,
             headers=self.__headers,
+            json=payload  # Use 'json=' para o requests formatar automaticamente
         )
+        
         return response.json()
     
     def send_buttons(self, number):
