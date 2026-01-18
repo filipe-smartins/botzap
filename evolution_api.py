@@ -27,7 +27,7 @@ class EvolutionAPI:
         payload = {
             'number': number,
             "options": {
-                "delay": 3000,
+                "delay": 5000,
                 "presence": "composing"
             },
             'text': text,
