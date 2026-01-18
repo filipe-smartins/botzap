@@ -38,9 +38,9 @@ def webhook():
 
 
     # APENAS PARA DEBUG
-    wnumber = '553185868191@s.whatsapp.net'   
-    if msg_data.get('key', {}).get('remoteJid', '') != '553185868191@s.whatsapp.net':
-        return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
+    #wnumber = '553185868191@s.whatsapp.net'   
+    #if msg_data.get('key', {}).get('remoteJid', '') != '553185868191@s.whatsapp.net':
+    #    return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
     
 
     evo_client = EvolutionAPI()
