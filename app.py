@@ -20,13 +20,6 @@ def webhook():
     body = request.json
 
 
-    #print(f'BODY RECEBIDO: {body}')
-
-    # Dica: Às vezes o Evolution manda eventos de status ou presença. 
-    # É bom checar se é uma mensagem nova.
-    if body.get('event') != 'messages.upsert' or msg_data.get('key', {}).get('remoteJid', '') != '553185471996@s.whatsapp.net':
-        return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
-
     # 2. Acessa o objeto interno 'data'
     msg_data = body.get('data', {})
     # 4. EXTRAIR A MENSAGEM
@@ -37,7 +30,16 @@ def webhook():
 
     #print(f'MSG DATA RECEBIDO: {texto}')
 
-    #wnumber = msg_data.get('key', {}).get('remoteJid', '')
+    wnumber = msg_data.get('key', {}).get('remoteJid', '')
+
+
+    #print(f'BODY RECEBIDO: {body}')
+
+    # Dica: Às vezes o Evolution manda eventos de status ou presença. 
+    # É bom checar se é uma mensagem nova.
+    if body.get('event') != 'messages.upsert' or msg_data.get('key', {}).get('remoteJid', '') != '553185471996@s.whatsapp.net':
+        return jsonify({'status': 'ignored', 'reason': 'not_upsert'}), 200
+
     
     wnumber = '553185471996@s.whatsapp.net'
     
