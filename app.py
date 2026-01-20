@@ -1,7 +1,5 @@
-from email import message
 from evolution_api import EvolutionAPI
 from flask import Flask, request, jsonify
-from time import sleep
 import sqlite3
 from datetime import datetime
 from respostas import *
