@@ -25,15 +25,23 @@ def webhook():
     wnumber = msg_data.get('key', {}).get('remoteJid', '') 
     nome = msg_data.get('pushName', '')
     
+    
+    
     # Configure WAL and lock wait to reduce "database is locked" errors under concurrent writes
     with sqlite3.connect('database.db', timeout=5, isolation_level=None) as conn:
-        conn.execute('PRAGMA journal_mode=WAL;')
-        conn.execute('PRAGMA busy_timeout=5000;')
-        conn.execute(
-            "INSERT OR IGNORE INTO contatos (numero, nome, status, data_ultimo_contato) VALUES (?, ?, ?, ?)",
-            (wnumber, nome, 'primeiro contato', data_atual),
-        )
-    
+        
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM contatos WHERE numero=?", (wnumber,))
+        contato = cursor.fetchone()
+        
+        if not contato:
+            conn.execute('PRAGMA journal_mode=WAL;')
+            conn.execute('PRAGMA busy_timeout=5000;')
+            conn.execute(
+                "INSERT OR IGNORE INTO contatos (numero, nome, status, data_ultimo_contato) VALUES (?, ?, ?, ?)",
+                (wnumber, nome, 'primeiro contato', data_atual),
+            )
+        
     #CONFIGURAÇÃO DE PAUSA
     global pausar
     if texto and texto.lower().strip() == 'pausar bot':
