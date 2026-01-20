@@ -33,6 +33,9 @@ def webhook():
     cursor.execute("INSERT INTO contatos (numero, nome, status, data_ultimo_contato) VALUES (?, ?, ?, ?)", (wnumber, nome, 'primeiro contato', data_atual))
     conn.commit()
     
+    cursor.close()
+    conn.close()
+    
     #CONFIGURAÇÃO DE PAUSA
     global pausar
     if texto and texto.lower().strip() == 'pausar bot':
@@ -50,7 +53,7 @@ def webhook():
     
 
     evo_client = EvolutionAPI()
-        
+    
     
     if "day use" in texto.lower().strip() or "dayuse" in texto.lower().strip() or "convite" in texto.lower().strip() or "diária" in texto.lower().strip() or "diaria" in texto.lower().strip():
         
@@ -117,9 +120,6 @@ def webhook():
                 text=decisao,
             )
 
-    
-    cursor.close()
-    conn.close()
 
     return jsonify({'status': 'success'}), 200
 
