@@ -27,6 +27,12 @@ def webhook():
     wnumber = msg_data.get('key', {}).get('remoteJid', '') 
     nome = msg_data.get('pushName', '')
     
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+        
+    cursor.execute("INSERT INTO contatos (numero, nome, status, data_ultimo_contato) VALUES (?, ?, ?, ?)", (wnumber, nome, 'primeiro contato', data_atual))
+    conn.commit()
+    
     #CONFIGURAÇÃO DE PAUSA
     global pausar
     if texto and texto.lower().strip() == 'pausar bot':
@@ -44,134 +50,22 @@ def webhook():
     
 
     evo_client = EvolutionAPI()
-    
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    
-    cursor.execute("SELECT * FROM contatos WHERE numero=?", (wnumber,))
-    contato = cursor.fetchone()
-    if not contato:
         
-        evo_client.send_message(
-            number=wnumber,
-            text=boas_vindas,
-        )
-        
-        cursor.execute("INSERT INTO contatos (numero, nome, status, data_ultimo_contato) VALUES (?, ?, ?, ?)", (wnumber, nome, 'primeiro contato', data_atual))
-        conn.commit()
     
-    elif "day use" in texto.lower().strip() or "dayuse" in texto.lower().strip() or "convite" in texto.lower().strip() or "diária" in texto.lower().strip() or "diaria" in texto.lower().strip():
+    if "day use" in texto.lower().strip() or "dayuse" in texto.lower().strip() or "convite" in texto.lower().strip() or "diária" in texto.lower().strip() or "diaria" in texto.lower().strip():
         
         evo_client.send_message(
             number=wnumber,
             text=cotas_6_meses,
         )
-    
-    elif contato[2] == 'concluído':
-        pass
-    
-    elif contato[2] == 'primeiro contato':
         
-        if texto.lower().strip().isdigit():
-        
-            if int(texto.strip()) == 1:
-                
-                evo_client.send_message(
-                    number=wnumber,
-                    text=cota_1_ano_1_pessoa,
-                )
-                
-                evo_client.send_message(
-                    number=wnumber,
-                    text=decisao,
-                )
-                
-            elif int(texto.strip()) == 2:
-                evo_client.send_message(
-                    number=wnumber,
-                    text=cota_1_ano_2_pessoas,
-                )
-                
-                evo_client.send_message(
-                    number=wnumber,
-                    text=decisao,
-                )
-            elif int(texto.strip()) == 3:
-                
-                evo_client.send_message(
-                    number=wnumber,
-                    text=cota_1_ano_3_pessoas,
-                )
-                
-                evo_client.send_message(
-                    number=wnumber,
-                    text=decisao,
-                )
-                
-            elif int(texto.strip()) == 4:
-                
-                evo_client.send_message(
-                    number=wnumber,
-                    text=cota_1_ano_4_pessoas,
-                )
-                
-                evo_client.send_message(
-                    number=wnumber,
-                    text=decisao,
-                )
-            else:
-                evo_client.send_message(
-                    number=wnumber,
-                    text=cota_1_ano_5_pessoas,
-                )
-                
-                evo_client.send_message(
-                    number=wnumber,
-                    text=decisao,
-                )
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('selecionado número de pessoas na cota', data_atual, wnumber))
-        else:
-                evo_client.send_message(
-                    number=wnumber,
-                    text=nao_entendi_numero_pessoas,
-                )
-            
-            
-    elif contato[2] == 'selecionado número de pessoas na cota':
-        if texto.lower().strip() == 'sim':
-            
-            evo_client.send_message(
-                number=wnumber,
-                text=decisao_positiva,
-            )
-                        
-            evo_client.send_message(
-                number=wnumber,
-                text=final_agradecimento,
-            )            
-            
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('finalizado com decisão positiva', data_atual, wnumber))
-        elif texto.lower().strip() == 'não' or texto.lower().strip() == 'nao':
-            
-            evo_client.send_message(
-                number=wnumber,
-                text=decisao_negativa,
-            )   
-            
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('concluído', data_atual, wnumber))
-        else:
-            
-            evo_client.send_message(
-                number=wnumber,
-                text=não_entendi_decisao,
-            )    
+    elif texto.lower().strip().isdigit():
     
-    elif contato[2] == 'decisão negativa':        
-        if texto.lower().strip() == 'sim':
+        if int(texto.strip()) == 1:
             
             evo_client.send_message(
                 number=wnumber,
-                text=cotas_6_meses,
+                text=cota_1_ano_1_pessoa,
             )
             
             evo_client.send_message(
@@ -179,77 +73,50 @@ def webhook():
                 text=decisao,
             )
             
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('enviado valores das cotas de 6 meses', data_atual, wnumber))
-        elif texto.lower().strip() == 'não' or texto.lower().strip() == 'nao':
-            
+        elif int(texto.strip()) == 2:
             evo_client.send_message(
                 number=wnumber,
-                text=decisao_negativa_final,
+                text=cota_1_ano_2_pessoas,
             )
             
             evo_client.send_message(
                 number=wnumber,
-                text=final_agradecimento,
+                text=decisao,
+            )
+        elif int(texto.strip()) == 3:
+            
+            evo_client.send_message(
+                number=wnumber,
+                text=cota_1_ano_3_pessoas,
+            )
+            
+            evo_client.send_message(
+                number=wnumber,
+                text=decisao,
+            )
+            
+        elif int(texto.strip()) == 4:
+            
+            evo_client.send_message(
+                number=wnumber,
+                text=cota_1_ano_4_pessoas,
+            )
+            
+            evo_client.send_message(
+                number=wnumber,
+                text=decisao,
+            )
+        elif int(texto.strip()) > 4 and int(texto.strip()) <= 10:
+            evo_client.send_message(
+                number=wnumber,
+                text=cota_1_ano_5_pessoas,
+            )
+            
+            evo_client.send_message(
+                number=wnumber,
+                text=decisao,
             )
 
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('concluído', data_atual, wnumber))
-        else:
-            evo_client.send_message(
-                number=wnumber,
-                text=não_entendi_decisao,
-            )
-
-        
-    elif contato[2] == 'enviado valores das cotas de 6 meses':
-        if texto.lower().strip() == 'sim':
-            
-            evo_client.send_message(
-                number=wnumber,
-                text=decisao_positiva,
-            )
-            evo_client.send_message(
-                number=wnumber,
-                text=final_agradecimento,
-            )
-            
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('finalizado com decisão positiva', data_atual, wnumber))
-        elif texto.lower().strip() == 'não' or texto.lower().strip() == 'nao':
-            evo_client.send_message(
-                number=wnumber,
-                text=decisao_negativa_final,
-            )
-            evo_client.send_message(
-                number=wnumber,
-                text=final_agradecimento,
-            )
-            cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('decisão negativa final', data_atual, wnumber))
-        else:
-            
-            evo_client.send_message(
-                number=wnumber,
-                text=não_entendi_decisao,
-            )
-
-    elif texto.lower().strip() == 'falar com atendente':
-        
-        evo_client.send_message(
-            number=wnumber,
-            text=falar_com_atendente,
-        )
-        
-        cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('concluído', data_atual, wnumber))
-     
-    else:
-        
-        evo_client.send_message(
-            number=wnumber,
-            text=falar_com_atendente,
-        )
-        
-        cursor.execute("UPDATE contatos SET status=?, data_ultimo_contato=? WHERE numero=?", ('concluído', data_atual, wnumber))
-
-    
-    conn.commit()
     
     cursor.close()
     conn.close()

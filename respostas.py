@@ -67,9 +67,7 @@ Cota com 2 pessoas: 3 X 174,00 no cartão ou 470,00 à vista;
 
 As cotas são limitadas, reserve já a sua!"""
 
-decisao = """PODEMOS RESERVAR A SUA COTA?
-
->>> Digite SIM para reservar ou NÃO para cancelar o atendimento <<<"""
+decisao = """Gostaria de reservar sua cota?"""
 
 não_entendi_decisao = """Não entendi sua resposta! Por favor, digite apenas SIM para reservar sua cota ou NÃO para cancelar o atendimento.
 
